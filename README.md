@@ -15,6 +15,12 @@ Each skill is scoped to avoid overlap — e.g. `ensisdev-mc-design-skill` defers
 
 Each skill is a self-contained folder (`SKILL.md` + supporting files) following the [agentskills.io specification](https://agentskills.io/specification).
 
+**Vercel Skills CLI:**
+```bash
+npx skills add ensisdev/skills
+```
+
+**Manual clone:**
 ```bash
 git clone https://github.com/ensisdev/skills.git
 cp -r skills/ensisdev-mc-design-skill <your-skills-directory>
