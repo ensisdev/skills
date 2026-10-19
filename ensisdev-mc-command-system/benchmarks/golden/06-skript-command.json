@@ -1,0 +1,23 @@
+{
+  "requirements": [
+    "scripting",
+    "gameplay-player",
+    "executor-declaration",
+    "parser-vs-domain-errors",
+    "automation-path"
+  ],
+  "expected_paths": [
+    "kit list",
+    "kit claim <kit>"
+  ],
+  "forbidden": [
+    "script-internal names as public verbs",
+    "single trigger handling player and console identically without declaration",
+    "scheduler dispatch depending on a fake player"
+  ],
+  "journey_checks": [
+    "claim -> cooldown error with remaining time completes",
+    "unknown kit yields domain error with available list",
+    "automation dispatch works headless"
+  ]
+}

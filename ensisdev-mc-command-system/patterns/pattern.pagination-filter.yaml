@@ -1,0 +1,19 @@
+id: list.pagination-filter
+name: Paginated Filtered List
+intent: Keep list output usable when resources grow past one screen.
+when:
+  - resource count is unbounded (player-created content)
+  - staff need to find subsets
+avoid_when:
+  - fewer than ~10 resources can ever exist
+structure:
+  - "<root> list [--page <n>] [--filter <text>] [--sort <key>]"
+constraints:
+  - page size fixed and documented; out-of-range page is a domain error
+  - filters are flags with completable values where the set is known
+  - permission-filtered: unauthorized entries hidden, not redacted inline
+tradeoffs:
+  - flags add parser surface but prevent chat-spam and leaks
+evidence:
+  - discovery/completion refs 08/11, moderation history lookup
+status: experimental

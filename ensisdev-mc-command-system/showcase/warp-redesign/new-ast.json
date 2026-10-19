@@ -1,0 +1,94 @@
+{
+  "version": "4",
+  "projectContext": {
+    "platform": "paper",
+    "mc_versions": ["1.20", "1.21"],
+    "framework": "cloud",
+    "audience": "players"
+  },
+  "decision": {
+    "selectedPatternIds": [
+      "resource.list-inspect",
+      "selector.explicit-target",
+      "risk.confirm-destructive"
+    ],
+    "reason": "Player travel flow stays short and direct; cost/cooldown are contract; legacy /warp <name> preserved as alias (E-012).",
+    "confidence": "high"
+  },
+  "root": {
+    "name": "warp",
+    "kind": "root",
+    "description": "Travel between named warps.",
+    "aliases": [],
+    "permissions": ["plugin.warp.base"],
+    "contexts": ["player", "console"],
+    "help": {
+      "summary": "Travel between named warps.",
+      "usage": "/warp <go|list> ..."
+    },
+    "children": [
+      {
+        "name": "go",
+        "kind": "literal",
+        "description": "Travel to a warp. Costs $50, 10s cooldown.",
+        "arguments": [
+          {
+            "name": "name",
+            "type": "warp-name",
+            "required": true,
+            "semantic": "resource-name"
+          }
+        ],
+        "permissions": ["plugin.warp.go"],
+        "contexts": ["player"],
+        "risk": "mutate",
+        "completion": {
+          "source": "registry-snapshot",
+          "permission_filtered": true,
+          "cap": 25
+        },
+        "help": {
+          "summary": "Travel to a warp ($50, 10s cooldown).",
+          "usage": "/warp go <name>"
+        },
+        "deprecation": {
+          "old_path": "warp <name>",
+          "disposition": "alias",
+          "forwards_to": "warp go <name>",
+          "reason": "player muscle memory + docs (E-008, E-012)"
+        },
+        "implementation": {
+          "thread_affinity": "region",
+          "scheduler": "entity",
+          "confirm_flow": "prompt names cost; console uses --confirm flag",
+          "notes": "charge once; insufficient funds and cooldown are domain errors (49)"
+        }
+      },
+      {
+        "name": "list",
+        "kind": "literal",
+        "description": "Browse warps, paginated and clickable.",
+        "permissions": ["plugin.warp.view"],
+        "contexts": ["player", "console"],
+        "risk": "read",
+        "completion": {
+          "source": "flags-only"
+        },
+        "help": {
+          "summary": "List warps (page 1 by default).",
+          "usage": "/warp list [--page <n>]"
+        },
+        "deprecation": {
+          "old_path": "warplist",
+          "disposition": "alias",
+          "forwards_to": "warp list",
+          "reason": "documented path (E-008)"
+        },
+        "implementation": {
+          "thread_affinity": "async-safe",
+          "pagination": "pattern.list-pagination-filter"
+        }
+      }
+    ]
+  }
+}

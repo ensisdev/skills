@@ -1,0 +1,27 @@
+{
+  "requirements": [
+    "entity-resources",
+    "spatial-systems",
+    "lifecycle",
+    "inspection",
+    "property-editing",
+    "spatial-operations"
+  ],
+  "expected_paths": [
+    "hologram create <name>",
+    "hologram info <hologram>",
+    "hologram list",
+    "hologram remove <hologram>",
+    "hologram edit <hologram> <property>"
+  ],
+  "forbidden": [
+    "method-name leak as verb (e.g. clearLines as root verb)",
+    "ambiguous move without direction",
+    "old /hd setline removed without alias or deprecation"
+  ],
+  "journey_checks": [
+    "create -> edit -> move completes",
+    "out-of-range line index yields domain error",
+    "legacy /hd setline resolves"
+  ]
+}

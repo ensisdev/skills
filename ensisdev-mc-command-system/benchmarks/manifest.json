@@ -1,0 +1,19 @@
+{
+  "version": "4.1.0",
+  "semantic_equivalence": true,
+  "scoring": "SCORING.md",
+  "cases": [
+    "01-hologram-resource",
+    "02-npc-actions",
+    "03-player-warps",
+    "04-shop-items",
+    "05-region-admin",
+    "06-skript-command",
+    "07-gui-dispatch",
+    "08-legacy-migration",
+    "09-folia-teleport",
+    "10-confirm-destructive",
+    "11-proxy-dispatch",
+    "12-i18n-help"
+  ]
+}

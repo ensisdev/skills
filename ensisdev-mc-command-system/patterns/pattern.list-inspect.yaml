@@ -1,0 +1,20 @@
+id: resource.list-inspect
+name: List and Inspect Pair
+intent: Give every persistent resource a cheap overview and a rich detail view.
+when:
+  - resource has identity plus several properties
+  - players or staff browse before acting
+avoid_when:
+  - resource is a singleton (use status instead)
+structure:
+  - "<root> list [filter...] [--page <n>]"
+  - "<root> info <resource>"
+constraints:
+  - list output is one line per resource with the identity first
+  - info shows all user-relevant properties including relationships
+  - filters are flags, never positional verbs (04)
+tradeoffs:
+  - list must stay fast; heavy detail belongs to info
+evidence:
+  - FancyHolograms info/list exemplar
+status: established

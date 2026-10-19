@@ -1,0 +1,23 @@
+{
+  "requirements": [
+    "teleport-travel",
+    "spatial-systems",
+    "explicit-direction",
+    "thread-affinity",
+    "console-targets"
+  ],
+  "expected_paths": [
+    "tpo <player>",
+    "tpohere <player>"
+  ],
+  "forbidden": [
+    "teleport direction ambiguous in help",
+    "region-touching leaf without thread_affinity metadata",
+    "permission checked after async scheduler hop"
+  ],
+  "journey_checks": [
+    "cross-region teleport arrives cleanly",
+    "unauthorized bring-here denied pre-hop",
+    "console A-to-B teleport works with explicit targets"
+  ]
+}

@@ -1,0 +1,174 @@
+{
+  "version": "4",
+  "projectContext": {
+    "platform": "paper",
+    "mc_versions": ["1.21"],
+    "framework": "commandapi",
+    "audience": "staff and players"
+  },
+  "decision": {
+    "selectedPatternIds": [
+      "resource.edit-namespace",
+      "resource.list-inspect",
+      "selector.explicit-target"
+    ],
+    "reason": "Durable named holograms with many mutable properties: lifecycle separated from grouped mutation; spatial direction explicit.",
+    "confidence": "high"
+  },
+  "root": {
+    "name": "hologram",
+    "kind": "root",
+    "description": "Manage persistent holograms.",
+    "aliases": ["holo", "hd"],
+    "permissions": ["plugin.hologram.base"],
+    "contexts": ["player", "console"],
+    "help": {
+      "summary": "Create, inspect, edit and remove holograms.",
+      "usage": "/hologram <create|list|info|edit|copy|remove> ..."
+    },
+    "children": [
+      {
+        "name": "create",
+        "kind": "literal",
+        "description": "Create a hologram at your position.",
+        "arguments": [
+          {"name": "name", "type": "resource-name", "required": true, "semantic": "resource-name"}
+        ],
+        "permissions": ["plugin.hologram.create"],
+        "contexts": ["player", "console"],
+        "risk": "mutate",
+        "completion": {"source": "none"},
+        "help": {"summary": "Create a hologram.", "usage": "/hologram create <name>"},
+        "implementation": {"thread_affinity": "region", "scheduler": "entity"}
+      },
+      {
+        "name": "list",
+        "kind": "literal",
+        "description": "List holograms, paginated.",
+        "permissions": ["plugin.hologram.view"],
+        "contexts": ["player", "console"],
+        "risk": "read",
+        "completion": {"source": "flags-only"},
+        "help": {"summary": "List holograms.", "usage": "/hologram list [--page <n>] [--nearby <radius>]"},
+        "implementation": {"thread_affinity": "async-safe"}
+      },
+      {
+        "name": "info",
+        "kind": "literal",
+        "description": "Show full detail of one hologram.",
+        "arguments": [
+          {"name": "hologram", "type": "resource-name", "required": true, "semantic": "resource-name"}
+        ],
+        "permissions": ["plugin.hologram.view"],
+        "contexts": ["player", "console"],
+        "risk": "read",
+        "completion": {"source": "registry-snapshot", "permission_filtered": true},
+        "help": {"summary": "Inspect a hologram.", "usage": "/hologram info <hologram>"}
+      },
+      {
+        "name": "copy",
+        "kind": "literal",
+        "description": "Duplicate a hologram under a new name.",
+        "arguments": [
+          {"name": "hologram", "type": "resource-name", "required": true, "semantic": "resource-name"},
+          {"name": "new-name", "type": "resource-name", "required": true, "semantic": "resource-name"}
+        ],
+        "permissions": ["plugin.hologram.create"],
+        "contexts": ["player", "console"],
+        "risk": "mutate",
+        "completion": {"source": "registry-snapshot", "permission_filtered": true},
+        "help": {"summary": "Copy a hologram.", "usage": "/hologram copy <hologram> <new-name>"}
+      },
+      {
+        "name": "edit",
+        "kind": "group",
+        "description": "Grouped property mutation.",
+        "permissions": ["plugin.hologram.edit"],
+        "contexts": ["player", "console"],
+        "completion": {"source": "none"},
+        "help": {"summary": "Edit hologram properties.", "usage": "/hologram edit <hologram> <property> ..."},
+        "children": [
+          {
+            "name": "text",
+            "kind": "property",
+            "description": "Set a text line (MiniMessage).",
+            "arguments": [
+              {"name": "hologram", "type": "resource-name", "required": true, "semantic": "resource-name"},
+              {"name": "index", "type": "integer", "required": true, "semantic": "line-index"},
+              {"name": "text", "type": "minimessage", "required": true, "semantic": "formatted-text"}
+            ],
+            "permissions": ["plugin.hologram.edit"],
+            "contexts": ["player", "console"],
+            "risk": "mutate",
+            "completion": {"source": "registry-snapshot", "permission_filtered": true},
+            "help": {"summary": "Set a hologram text line.", "usage": "/hologram edit <hologram> text <index> <text>"},
+            "deprecation": {
+              "old_path": "hd setline <name> <index> <text>",
+              "disposition": "alias",
+              "forwards_to": "hologram edit <hologram> text <index> <text>",
+              "reason": "legacy documented path"
+            }
+          },
+          {
+            "name": "moveHere",
+            "kind": "property",
+            "description": "Move the hologram to your position.",
+            "arguments": [
+              {"name": "hologram", "type": "resource-name", "required": true, "semantic": "resource-name"}
+            ],
+            "permissions": ["plugin.hologram.edit.move"],
+            "contexts": ["player"],
+            "risk": "mutate",
+            "completion": {"source": "registry-snapshot", "permission_filtered": true},
+            "help": {"summary": "Move a hologram to you.", "usage": "/hologram edit <hologram> moveHere"}
+          },
+          {
+            "name": "moveTo",
+            "kind": "property",
+            "description": "Move the hologram to explicit coordinates.",
+            "arguments": [
+              {"name": "hologram", "type": "resource-name", "required": true, "semantic": "resource-name"},
+              {"name": "x", "type": "double", "required": true, "semantic": "coordinate"},
+              {"name": "y", "type": "double", "required": true, "semantic": "coordinate"},
+              {"name": "z", "type": "double", "required": true, "semantic": "coordinate"}
+            ],
+            "permissions": ["plugin.hologram.edit.move"],
+            "contexts": ["player", "console"],
+            "risk": "mutate",
+            "completion": {"source": "registry-snapshot", "permission_filtered": true},
+            "help": {"summary": "Move a hologram to coordinates.", "usage": "/hologram edit <hologram> moveTo <x> <y> <z>"},
+            "implementation": {"thread_affinity": "region", "scheduler": "entity"}
+          },
+          {
+            "name": "background",
+            "kind": "property",
+            "description": "Set the background style.",
+            "arguments": [
+              {"name": "hologram", "type": "resource-name", "required": true, "semantic": "resource-name"},
+              {"name": "style", "type": "enum:background", "required": true, "semantic": "style-choice"}
+            ],
+            "permissions": ["plugin.hologram.edit"],
+            "contexts": ["player", "console"],
+            "risk": "mutate",
+            "completion": {"source": "static-enum", "permission_filtered": true},
+            "help": {"summary": "Set hologram background.", "usage": "/hologram edit <hologram> background <style>"}
+          }
+        ]
+      },
+      {
+        "name": "remove",
+        "kind": "literal",
+        "description": "Delete a hologram (confirmed).",
+        "arguments": [
+          {"name": "hologram", "type": "resource-name", "required": true, "semantic": "resource-name"}
+        ],
+        "permissions": ["plugin.hologram.remove"],
+        "contexts": ["player", "console"],
+        "risk": "destructive",
+        "completion": {"source": "registry-snapshot", "permission_filtered": true},
+        "help": {"summary": "Remove a hologram. Asks for confirmation.", "usage": "/hologram remove <hologram>"},
+        "implementation": {"audit": "log actor, target, timestamp", "confirm_flow": "two-step, 30s expiry"}
+      }
+    ]
+  }
+}

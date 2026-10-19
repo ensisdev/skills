@@ -1,0 +1,20 @@
+id: admin.dedicated-root
+name: Dedicated Admin Root
+intent: Separate plugin administration from resource manipulation.
+when:
+  - plugin has reload/save/convert/debug/version operations
+  - resource root is player-visible
+avoid_when:
+  - plugin has no administration surface beyond permissions
+structure:
+  - "<resource> ... (player/staff resource verbs)"
+  - "<plugin> version|save|reload|convert|debug"
+constraints:
+  - admin root never duplicates resource verbs
+  - reload/save/convert are system-risk with admin context (23/34)
+  - resource root help does not advertise admin-only paths to players
+tradeoffs:
+  - two roots to document, but each audience sees only its own
+evidence:
+  - FancyHolograms /fancyholograms admin surface exemplar
+status: established

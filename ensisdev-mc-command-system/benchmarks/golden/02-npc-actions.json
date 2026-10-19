@@ -1,0 +1,25 @@
+{
+  "requirements": [
+    "entity-resources",
+    "action-trigger-systems",
+    "ordered-collections",
+    "trigger-action-distinction",
+    "action-type-permissions"
+  ],
+  "expected_paths": [
+    "npc action <npc> <trigger> add",
+    "npc action <npc> <trigger> list",
+    "npc action <npc> <trigger> remove",
+    "npc action <npc> <trigger> move"
+  ],
+  "forbidden": [
+    "unordered action bag (no move/reorder path)",
+    "console-command action type without elevated permission",
+    "GUI-dispatched old path silently broken"
+  ],
+  "journey_checks": [
+    "add -> list -> move -> remove completes",
+    "unauthorized privileged action denied",
+    "legacy del path resolves"
+  ]
+}

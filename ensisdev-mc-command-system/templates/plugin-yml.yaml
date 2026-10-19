@@ -1,0 +1,36 @@
+# plugin.yml starter (keep in sync with the AST, see 52)
+
+```yaml
+name: Example
+version: 1.0.0
+main: com.example.ExamplePlugin
+api-version: "1.20"
+author: Example
+
+commands:
+  example:
+    description: Manage example resources.
+    usage: /example <create|info|edit|remove> ...
+    aliases: [ex]
+    permission: plugin.example.base
+    permission-message: You do not have permission to use this command.
+
+permissions:
+  plugin.example.base:
+    description: Base access to example commands.
+    default: true
+  plugin.example.view:
+    description: List and inspect example resources.
+    default: true
+  plugin.example.create:
+    description: Create example resources.
+    default: op
+  plugin.example.edit:
+    description: Edit example resources.
+    default: op
+  plugin.example.remove:
+    description: Remove example resources.
+    default: op
+```
+
+Rules: `usage` derivable from the AST; `aliases` equal AST aliases; `default: op` never on economy/destructive/system leaves without 23/34 review; `permission-message` matches the AST `error_permission` locale key (48).

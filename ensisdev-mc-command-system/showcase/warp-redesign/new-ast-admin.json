@@ -1,0 +1,130 @@
+{
+  "version": "4",
+  "projectContext": {
+    "platform": "paper",
+    "mc_versions": ["1.20", "1.21"],
+    "framework": "cloud",
+    "audience": "admins"
+  },
+  "decision": {
+    "selectedPatternIds": [
+      "admin.dedicated-root",
+      "risk.confirm-destructive"
+    ],
+    "reason": "Administration separated from the player root (E-013); overwrite and delete are guarded (E-003, E-004, E-011).",
+    "confidence": "high"
+  },
+  "root": {
+    "name": "warpadmin",
+    "kind": "root",
+    "description": "Curate the warp catalog (admin).",
+    "aliases": ["wadmin"],
+    "permissions": ["plugin.warp.admin"],
+    "contexts": ["player", "console"],
+    "help": {
+      "summary": "Create, move and delete warps (admin).",
+      "usage": "/warpadmin <create|move|delete> ..."
+    },
+    "children": [
+      {
+        "name": "create",
+        "kind": "literal",
+        "description": "Create a warp at your position (or explicit coordinates from console).",
+        "arguments": [
+          {
+            "name": "name",
+            "type": "warp-name",
+            "required": true,
+            "semantic": "resource-name"
+          }
+        ],
+        "permissions": ["plugin.warp.admin.create"],
+        "contexts": ["player", "console"],
+        "risk": "mutate",
+        "completion": {
+          "source": "none"
+        },
+        "help": {
+          "summary": "Create a warp. Overwriting needs --force plus confirmation.",
+          "usage": "/warpadmin create <name> [--force]"
+        },
+        "deprecation": {
+          "old_path": "warp set <name>",
+          "disposition": "deprecate",
+          "forwards_to": "warpadmin create <name>",
+          "removal_version": "2.0",
+          "reason": "silent overwrite replaced by guarded create (E-003)"
+        },
+        "implementation": {
+          "thread_affinity": "region",
+          "scheduler": "entity",
+          "notes": "overwrite path requires --force and two-step confirm"
+        }
+      },
+      {
+        "name": "move",
+        "kind": "literal",
+        "description": "Relocate a warp to your position.",
+        "arguments": [
+          {
+            "name": "name",
+            "type": "warp-name",
+            "required": true,
+            "semantic": "resource-name"
+          }
+        ],
+        "permissions": ["plugin.warp.admin.move"],
+        "contexts": ["player", "console"],
+        "risk": "mutate",
+        "completion": {
+          "source": "registry-snapshot",
+          "permission_filtered": true
+        },
+        "help": {
+          "summary": "Move a warp to a new location.",
+          "usage": "/warpadmin move <name>"
+        },
+        "implementation": {
+          "thread_affinity": "region",
+          "scheduler": "entity"
+        }
+      },
+      {
+        "name": "delete",
+        "kind": "literal",
+        "description": "Delete a warp (confirmed, audited).",
+        "arguments": [
+          {
+            "name": "name",
+            "type": "warp-name",
+            "required": true,
+            "semantic": "resource-name"
+          }
+        ],
+        "permissions": ["plugin.warp.admin.delete"],
+        "contexts": ["player", "console"],
+        "risk": "destructive",
+        "completion": {
+          "source": "registry-snapshot",
+          "permission_filtered": true
+        },
+        "help": {
+          "summary": "Delete a warp. Asks for confirmation.",
+          "usage": "/warpadmin delete <name>"
+        },
+        "deprecation": {
+          "old_path": "warp del <name>",
+          "disposition": "deprecate",
+          "forwards_to": "warpadmin delete <name>",
+          "removal_version": "2.0",
+          "reason": "unguarded delete replaced by confirmed delete (E-004)"
+        },
+        "implementation": {
+          "thread_affinity": "async-safe",
+          "audit": "log actor, target, timestamp",
+          "confirm_flow": "two-step, 30s expiry, automation via --confirm"
+        }
+      }
+    ]
+  }
+}

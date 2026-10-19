@@ -1,0 +1,20 @@
+id: scene.spaceport-hero
+name: Spaceport Hero
+kind: scene
+base_scene: spaceport
+scale: hero
+layout_spaces:
+- WORLD
+- ANCHOR
+- OBJECT_LOCAL
+- PARENT_LOCAL
+- PART_LOCAL
+anchor_policy: explicit
+asset_search_policy: exact -> alias/tag -> component -> primitive -> compose
+lifecycle: scene owns spawned displays and cleans them on teardown
+performance_budget: 384
+lod_policy: use LOD tiers when repeated or distant
+validation:
+- anchor-defined
+- cleanup-defined
+- entity-budget-defined

@@ -1,0 +1,21 @@
+id: selector.explicit-target
+name: Explicit Target Selector
+intent: Remove who/where ambiguity from commands that act on players or positions.
+when:
+  - command can affect someone other than the executor
+  - command can act on a location other than the executor's
+avoid_when:
+  - command is strictly self-scoped by design
+structure:
+  - "<root> <verb> <player>"
+  - "<root> <verb> <a> <b>"
+  - "<root> <verb> --here|--at <x> <y> <z>"
+constraints:
+  - direction is stated in help (who moves where)
+  - acting on others requires a higher capability than acting on self
+  - console callers must supply explicit targets (no executor fallback)
+tradeoffs:
+  - longer syntax for staff paths keeps player paths short
+evidence:
+  - teleport-travel scenario, benchmark cases 03/09
+status: established

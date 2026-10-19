@@ -1,0 +1,171 @@
+# Machine-readable lint rules for ensisdev-mc-design
+# Source of truth: rules/ANTI_PATTERN_LINT.md (human-readable).
+# Agents may evaluate designs mechanically against these checks.
+version: 1
+severities: [ERROR, WARN, INFO]
+
+rules:
+  - id: GLYPH-001
+    severity: ERROR
+    description: Matching decorative glyphs surround a title by default.
+    detect: title_matches_regex_with_paired_glyphs
+    glyphs: ["✦", "★", "◆", "»", "«", "❖", "✧"]
+    fix: remove paired glyphs; strengthen via casing/scale/color/spacing instead
+
+  - id: GLYPH-002
+    severity: WARN
+    description: Same decorative glyph reused across many unrelated surfaces.
+    detect: glyph_frequency_across_surfaces
+    threshold: { max_shared_glyph_ratio: 0.5 }
+
+  - id: GLYPH-003
+    severity: WARN
+    description: Every lore line begins with the same decorative bullet.
+    detect: uniform_leading_bullet_in_lore
+
+  - id: GLYPH-004
+    severity: INFO
+    description: More than two decorative glyphs in one compact message cluster.
+    threshold: { max_decorative_per_cluster: 2 }
+
+  - id: PREFIX-001
+    severity: ERROR
+    description: Chat message does not start with the standard gradient [PluginName] prefix.
+    detect: message_missing_prefix
+
+  - id: PREFIX-002
+    severity: WARN
+    description: Separator or decorative glyph after or inside the prefix.
+    detect: prefix_separator_glyph
+
+  - id: PREFIX-003
+    severity: WARN
+    description: Prefix hand-built per message, inconsistent between messages, or more than 3 gradient stops.
+    detect: prefix_inconsistency
+    threshold: { max_gradient_stops: 3 }
+
+  - id: PREFIX-004
+    severity: INFO
+    description: Prefix repeated on every line of a multi-line message.
+    detect: prefix_repeated_per_line
+
+  - id: COMPAT-001
+    severity: WARN
+    description: Legacy section-sign / ChatColor formatting instead of MiniMessage/Adventure.
+    detect: legacy_color_codes
+
+  - id: TR-001
+    severity: WARN
+    description: Small-caps word mixes in normal ç/ğ/ö/ş/ü (no small-cap form exists).
+    detect: smallcaps_with_turkish_special_letters
+
+  - id: TR-002
+    severity: WARN
+    description: No-arg toUpperCase()/toLowerCase() (Turkish i/I bug); pass Locale.ROOT or the player's locale.
+    detect: noarg_case_conversion
+
+  - id: GUI-001
+    severity: ERROR
+    description: Identical border/filler pattern across menus without functional justification.
+    detect: slot_pattern_similarity
+
+  - id: GUI-002
+    severity: WARN
+    description: Navigation slots cloned across unrelated menus.
+    detect: nav_slot_positions_identical
+
+  - id: GUI-003
+    severity: WARN
+    description: Center alignment used for every information class.
+    detect: alignment_uniformity
+
+  - id: GUI-004
+    severity: INFO
+    description: Empty state lacks explanation or next action.
+    detect: empty_state_without_cta
+
+  - id: LORE-001
+    severity: ERROR
+    description: Same lore schema across item categories with different information needs.
+    detect: lore_structure_uniformity_across_categories
+
+  - id: LORE-002
+    severity: WARN
+    description: Blank lines used as filler rather than grouping.
+    detect: consecutive_blank_lines_gt_1
+
+  - id: LORE-003
+    severity: INFO
+    description: Long descriptions set in small caps.
+    detect: smallcaps_length_exceeded
+    threshold: { max_smallcaps_chars: 24 }
+
+  - id: TYPE-001
+    severity: WARN
+    description: Everything is bold.
+    detect: bold_ratio
+    threshold: { max_bold_ratio: 0.5 }
+
+  - id: TYPE-002
+    severity: WARN
+    description: Every title uses small caps.
+    detect: smallcaps_title_ratio
+    threshold: { max_smallcaps_title_ratio: 0.7 }
+
+  - id: COLOR-001
+    severity: ERROR
+    description: Semantic state colors change meaning across surfaces.
+    detect: color_role_consistency
+
+  - id: COLOR-002
+    severity: WARN
+    description: Most elements get unique colors without hierarchy.
+    detect: distinct_color_count_per_screen
+    threshold: { max_colors_non_dashboard: 6 }
+
+  - id: COLOR-003
+    severity: INFO
+    description: Color is the only signal for success/error/locked.
+    detect: color_only_state
+
+  - id: COPY-001
+    severity: WARN
+    description: Generic repeated action phrase ("Click here") for many actions.
+    detect: generic_action_phrase_frequency
+
+  - id: COPY-002
+    severity: WARN
+    description: Generic error ("Something went wrong.") without recovery guidance.
+    detect: error_without_next_step
+
+  - id: DATA-001
+    severity: ERROR
+    description: User-provided content inserted into MiniMessage markup as trusted formatting.
+    detect: deserialize_concatenation_of_user_input
+    fix: use Placeholder.unparsed / Placeholder.component
+
+  - id: DATA-002
+    severity: WARN
+    description: Layout depends on fixed English string width.
+    detect: hardcoded_pad_or_width_assumption
+
+  - id: VAR-001
+    severity: ERROR
+    description: Two major surfaces interchangeable except text/icon swaps.
+    detect: composition_similarity_score
+    threshold: { min_variation_dimensions: 3 }
+
+  - id: VAR-002
+    severity: WARN
+    description: More than three recent surfaces share the same title strategy.
+    threshold: { max_same_title_strategy_streak: 3 }
+
+  - id: VAR-003
+    severity: INFO
+    description: New surface varied fewer than three design dimensions vs nearest neighbor.
+
+scoring:
+  # anti-convergence score: 0–2 per dimension, 8 dimensions = 16 points
+  dimensions: [composition, typography, iconography, information_architecture,
+               spacing, interaction_model, copy_structure, state_treatment]
+  deliberate_redesign_min_score: 10

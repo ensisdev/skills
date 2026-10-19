@@ -1,0 +1,156 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ensisdev.dev/schemas/command-ast/v4.json",
+  "title": "EnsisDev Command AST v4",
+  "type": "object",
+  "required": [
+    "version",
+    "root"
+  ],
+  "properties": {
+    "version": {
+      "const": "4"
+    },
+    "projectContext": {
+      "type": "object"
+    },
+    "decision": {
+      "type": "object",
+      "properties": {
+        "selectedPatternIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "reason": {
+          "type": "string"
+        },
+        "confidence": {
+          "enum": [
+            "high",
+            "medium",
+            "low"
+          ]
+        }
+      }
+    },
+    "root": {
+      "$ref": "#/$defs/node"
+    }
+  },
+  "$defs": {
+    "node": {
+      "type": "object",
+      "required": [
+        "name",
+        "kind"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "root",
+            "literal",
+            "argument",
+            "group",
+            "property",
+            "action",
+            "flag"
+          ]
+        },
+        "description": {
+          "type": "string"
+        },
+        "arguments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/argument"
+          }
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/node"
+          }
+        },
+        "aliases": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "permissions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "contexts": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "player",
+              "console",
+              "admin",
+              "moderator",
+              "automation",
+              "rcon",
+              "gui",
+              "npc",
+              "script"
+            ]
+          }
+        },
+        "risk": {
+          "enum": [
+            "read",
+            "mutate",
+            "destructive",
+            "bulk-destructive",
+            "system"
+          ]
+        },
+        "completion": {
+          "type": "object"
+        },
+        "help": {
+          "type": "object"
+        },
+        "deprecation": {
+          "type": "object"
+        },
+        "implementation": {
+          "type": "object"
+        }
+      }
+    },
+    "argument": {
+      "type": "object",
+      "required": [
+        "name",
+        "type"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "default": {},
+        "choices": {
+          "type": "array"
+        },
+        "semantic": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

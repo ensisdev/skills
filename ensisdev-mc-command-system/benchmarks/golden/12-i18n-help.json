@@ -1,0 +1,22 @@
+{
+  "requirements": [
+    "messages-localization",
+    "fallback-bundle",
+    "input-escaping",
+    "error-taxonomy"
+  ],
+  "expected_paths": [
+    "warp create <name>"
+  ],
+  "forbidden": [
+    "hardcoded user-facing strings in handlers",
+    "unescaped interpolation of player-supplied values",
+    "raw locale key shown to players on missing translation",
+    "speculative non-English alias trees"
+  ],
+  "journey_checks": [
+    "hostile name renders literally",
+    "missing locale falls back silently to en",
+    "usage vs domain vs permission errors distinct"
+  ]
+}

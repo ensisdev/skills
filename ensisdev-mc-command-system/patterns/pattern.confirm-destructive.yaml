@@ -1,0 +1,21 @@
+id: risk.confirm-destructive
+name: Confirmed Destructive Action
+intent: Make irreversible or bulk operations deliberate without punishing common use.
+when:
+  - operation is destructive, bulk-destructive or system (23)
+  - recovery is not automatic
+avoid_when:
+  - operation is reversible with an adjacent undo path
+structure:
+  - "<root> <verb> <target> --dry-run"
+  - "<root> <verb> <target>"
+  - "<root> confirm"
+constraints:
+  - prompt names action, target/scope and cost (34/49)
+  - confirmation expires (default 30s)
+  - audit log records actor, scope and result
+tradeoffs:
+  - one extra step on rare paths buys safety on catastrophic ones
+evidence:
+  - benchmark case 10-confirm-destructive
+status: established

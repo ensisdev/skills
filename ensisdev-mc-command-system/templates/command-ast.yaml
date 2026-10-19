@@ -1,0 +1,41 @@
+# Command AST starter (validates against schemas/command-ast.schema.json, version "4")
+
+```yaml
+version: "4"
+projectContext:
+  platform: paper
+  mc_versions: ["1.21"]
+  framework: cloud
+decision:
+  selectedPatternIds: [resource.lifecycle, resource.edit-namespace]
+  reason: durable named resources with many mutable properties (06)
+  confidence: high
+root:
+  name: example
+  kind: root
+  description: Example resource commands.
+  aliases: [ex]
+  permissions: ["plugin.example.base"]
+  contexts: [player, console]
+  children:
+    - name: create
+      kind: literal
+      description: Create an example resource.
+      arguments:
+        - name: name
+          type: resource-name
+          required: true
+          semantic: resource-name
+      permissions: ["plugin.example.create"]
+      contexts: [player, admin, console]
+      risk: mutate
+      completion:
+        source: none
+      help:
+        summary: Create an example resource.
+        usage: /example create <name>
+      implementation:
+        thread_affinity: async-safe
+```
+
+Rules: every mutating leaf needs `risk` + `permissions`; every leaf needs `help.summary` + `help.usage`; aliases live only on the canonical node; removed paths are recorded under `deprecation`, never silently dropped.

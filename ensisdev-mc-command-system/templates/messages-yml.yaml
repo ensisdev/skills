@@ -1,0 +1,20 @@
+# messages.yml starter (MiniMessage, fallback locale; see 48)
+
+```yaml
+prefix: "<gray>[<aqua>Example</aqua>]</gray>"
+
+example:
+  create:
+    usage: "<red>Usage: <usage></red>"
+    success: "<green>Created <name>.</green>"
+    error_domain: "<red>An example named <name> already exists.</red>"
+    error_permission: "<red>You do not have permission to do that.</red>"
+  remove:
+    confirm_prompt: "<yellow>Remove <name>? Type <confirm> within 30s.</yellow>"
+    success: "<green>Removed <name>.</green>"
+  deprecated: "<yellow><old> is deprecated, use <new> instead (removal in <version>).</yellow>"
+  cooldown: "<red>Available in <remaining>.</red>"
+  insufficient_funds: "<red>That costs <cost> but you have <balance>.</red>"
+```
+
+Rules: every interpolated value (`<name>`, `<cost>`) is escaped user input; canonical verbs stay English; one key per AST leaf output kind (usage/success/error_domain/error_permission/confirm_prompt).

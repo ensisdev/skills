@@ -1,0 +1,11 @@
+name: LegacyWarps
+version: 1.4.2
+main: com.example.legacywarps.WarpPlugin
+api-version: "1.20"
+
+commands:
+  warp:
+    description: Warp commands.
+    usage: /warp <name|set|del>
+  warplist:
+    description: List warps.

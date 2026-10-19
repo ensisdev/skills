@@ -1,0 +1,20 @@
+id: scene.server-room-large
+name: Server Room Large
+kind: scene
+base_scene: server-room
+scale: large
+layout_spaces:
+- WORLD
+- ANCHOR
+- OBJECT_LOCAL
+- PARENT_LOCAL
+- PART_LOCAL
+anchor_policy: explicit
+asset_search_policy: exact -> alias/tag -> component -> primitive -> compose
+lifecycle: scene owns spawned displays and cleans them on teardown
+performance_budget: 256
+lod_policy: use LOD tiers when repeated or distant
+validation:
+- anchor-defined
+- cleanup-defined
+- entity-budget-defined

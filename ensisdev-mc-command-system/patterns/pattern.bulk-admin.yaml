@@ -1,0 +1,20 @@
+id: admin.bulk-scope
+name: Explicit Bulk Scope
+intent: Let admins operate on many resources without implicit wildcards.
+when:
+  - a selector can match many resources (prefix, flag, region, inactivity)
+  - operation is mutate or worse
+avoid_when:
+  - operation is read-only (list with filters covers it)
+structure:
+  - "<root> <verb> <selector> --dry-run"
+  - "<root> <verb> <selector> --confirm"
+constraints:
+  - selector syntax is documented and completable (never bare `all`)
+  - preview states matched count before execution
+  - scope and actor are audit-logged
+tradeoffs:
+  - explicit selectors are longer but reviewable in logs and tickets
+evidence:
+  - benchmark case 05-region-admin
+status: established

@@ -1,0 +1,15 @@
+# v4 Release Audit
+- [ ] Forensics
+- [ ] Evidence ledger
+- [ ] Scenario routing
+- [ ] Semantic mapping
+- [ ] Candidate comparison
+- [ ] AST valid
+- [ ] Implementation synchronized
+- [ ] Help/completion/errors synchronized
+- [ ] Permission/context/risk audit
+- [ ] Integration/docs search
+- [ ] Primary journeys
+- [ ] Benchmark/regression
+- [ ] Self-audit
+- [ ] Pattern generalized if warranted

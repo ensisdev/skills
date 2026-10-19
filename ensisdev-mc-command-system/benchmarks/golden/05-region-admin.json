@@ -1,0 +1,24 @@
+{
+  "requirements": [
+    "region-protection",
+    "admin-maintenance",
+    "explicit-target",
+    "bulk-safety",
+    "strong-permission"
+  ],
+  "expected_paths": [
+    "region info <region>",
+    "region flag <region> <flag> <state>",
+    "region remove <region>"
+  ],
+  "forbidden": [
+    "bulk delete with implicit wildcard and no confirmation",
+    "flag mutation without explicit on/off state",
+    "bulk scope visible to unauthorized completion"
+  ],
+  "journey_checks": [
+    "info -> set flag -> verify completes",
+    "bulk path offers dry-run preview then named-scope confirm",
+    "unauthorized bulk attempt denied with no leak"
+  ]
+}

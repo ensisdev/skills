@@ -1,0 +1,24 @@
+{
+  "requirements": [
+    "teleport-travel",
+    "gameplay-player",
+    "explicit-direction",
+    "cost-contract",
+    "cooldown-contract",
+    "admin-separation"
+  ],
+  "expected_paths": [
+    "warp list",
+    "warp go <name>"
+  ],
+  "forbidden": [
+    "charge without confirm prompt naming cost",
+    "cooldown error without remaining wait",
+    "teleport leaf without thread affinity metadata"
+  ],
+  "journey_checks": [
+    "list -> go (confirm) -> arrive completes",
+    "insufficient funds yields domain error with cost and balance",
+    "legacy /warp <name> shortcut resolves"
+  ]
+}

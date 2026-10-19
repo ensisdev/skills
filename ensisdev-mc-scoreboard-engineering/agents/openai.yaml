@@ -1,0 +1,14 @@
+interface:
+  display_name: EnsisDev Mc Scoreboard Engineering
+  short_description: Minecraft scoreboard ve tab tasarımı
+  default_prompt: Use $ensisdev-mc-scoreboard-engineering to design and preview a
+    clean Minecraft scoreboard and tab layout.
+  icon_small: assets/icon.svg
+  icon_large: assets/icon.svg
+policy:
+  products:
+  - chatgpt
+  - codex
+  - api
+  - atlas
+  allow_implicit_invocation: true

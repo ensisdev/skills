@@ -1,0 +1,17 @@
+id: context.location-implicit
+name: Contextual Player Location
+intent: Use executing player location when the player is the natural source.
+when:
+  - player is the natural source
+  - console has an explicit alternative if supported
+avoid_when:
+  - location must be executor-independent
+structure:
+  - "<root> movehere <resource>"
+constraints:
+  - console behavior is explicit
+tradeoffs:
+  - shorter player workflow
+evidence:
+  - common Minecraft spatial convention; verify project context
+status: established

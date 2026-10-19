@@ -1,0 +1,18 @@
+id: resource.edit-namespace
+name: Resource Edit Namespace
+intent: Group many mutable properties under a stable resource context.
+when:
+  - resource has several mutable properties
+  - direct property commands would create a wide namespace
+avoid_when:
+  - resource has one or two dominant mutations
+structure:
+  - "<root> edit <resource> <property> [value...]"
+constraints:
+  - lifecycle remains easy to discover
+  - canonical vocabulary is stable
+tradeoffs:
+  - one nesting level for grouping
+evidence:
+  - FancyHolograms exemplar
+status: established

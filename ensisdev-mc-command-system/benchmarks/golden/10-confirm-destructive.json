@@ -1,0 +1,26 @@
+{
+  "requirements": [
+    "admin-maintenance",
+    "bulk-destructive",
+    "preview",
+    "expiring-confirm",
+    "audit-log",
+    "automation-path"
+  ],
+  "expected_paths": [
+    "purge preview",
+    "purge confirm"
+  ],
+  "forbidden": [
+    "immediate bulk delete with no scope statement",
+    "bare confirm prompt without naming scope",
+    "stale confirmation executing after expiry",
+    "no audit record of actor and scope"
+  ],
+  "journey_checks": [
+    "dry-run states matched count, deletes nothing",
+    "confirm in window executes and audits",
+    "expired confirm requires re-issue",
+    "scheduler uses non-interactive flag path"
+  ]
+}

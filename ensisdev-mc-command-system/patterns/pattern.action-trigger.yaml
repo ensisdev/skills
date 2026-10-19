@@ -1,0 +1,18 @@
+id: action.trigger-sequence
+name: Trigger Action Sequence
+intent: Model ordered actions attached to a resource trigger.
+when:
+  - actions are ordered or repeatable
+  - a resource has named triggers
+avoid_when:
+  - there is one fixed side effect
+structure:
+  - "<root> action <resource> <trigger> add <action>"
+  - "<root> action <resource> <trigger> remove <index>"
+constraints:
+  - trigger and action remain distinct
+tradeoffs:
+  - explicit but discoverable
+evidence:
+  - FancyNpcs action-system exemplar
+status: established

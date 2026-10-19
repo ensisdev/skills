@@ -1,0 +1,21 @@
+{
+  "requirements": [
+    "gui-menu",
+    "integration-contract",
+    "context-downgrade",
+    "rename-safety"
+  ],
+  "expected_paths": [
+    "warp go <name>"
+  ],
+  "forbidden": [
+    "verb rename without alias or caller migration",
+    "GUI click executing with undeclared console context",
+    "permission denial leaking hidden structure"
+  ],
+  "journey_checks": [
+    "menu click executes travel with player context",
+    "renamed verb keeps menus working",
+    "unauthorized click denied generically"
+  ]
+}

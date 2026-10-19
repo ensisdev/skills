@@ -1,0 +1,24 @@
+{
+  "requirements": [
+    "teleport-travel",
+    "admin-maintenance",
+    "canonical-tree",
+    "deprecation-schedule",
+    "capability-separation"
+  ],
+  "expected_paths": [
+    "home set",
+    "home list",
+    "home remove <name>"
+  ],
+  "forbidden": [
+    "v1 path removed on day one without alias or deprecation",
+    "deprecation warning without naming the replacement",
+    "staff inspecting others via the player path"
+  ],
+  "journey_checks": [
+    "legacy /sethome works with deprecation notice",
+    "staff admin path permission-gated",
+    "removal version scheduled and recorded"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "requirements": [
+    "proxy-network",
+    "contract-separation",
+    "scope-visibility",
+    "registry-completion"
+  ],
+  "expected_paths": [
+    "server <name>"
+  ],
+  "forbidden": [
+    "proxy and backend sharing one undifferentiated tree",
+    "accidental root collision deciding behavior by registration order",
+    "hardcoded server-name enum"
+  ],
+  "journey_checks": [
+    "travel handled by exactly one declared layer",
+    "backend info reachable without collision",
+    "proxy outage degrades with documented fallback"
+  ]
+}

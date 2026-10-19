@@ -1,0 +1,68 @@
+{
+  "version": "4",
+  "projectContext": {
+    "platform": "paper",
+    "mc_versions": ["1.20", "1.21"],
+    "framework": "cloud",
+    "audience": "players and admins"
+  },
+  "decision": {
+    "selectedPatternIds": [
+      "resource.list-inspect",
+      "selector.explicit-target",
+      "risk.confirm-destructive",
+      "admin.dedicated-root"
+    ],
+    "reason": "Player travel stays short; admin curation on its own root; charged travel confirmed with named cost.",
+    "confidence": "high"
+  },
+  "root": {
+    "name": "warp",
+    "kind": "root",
+    "description": "Travel between named warps.",
+    "aliases": [],
+    "permissions": ["plugin.warp.base"],
+    "contexts": ["player", "console"],
+    "help": {
+      "summary": "Travel between named warps.",
+      "usage": "/warp <go|list> ..."
+    },
+    "children": [
+      {
+        "name": "go",
+        "kind": "literal",
+        "description": "Travel to a warp. Costs $50, 10s cooldown.",
+        "arguments": [
+          {"name": "name", "type": "warp-name", "required": true, "semantic": "resource-name"}
+        ],
+        "permissions": ["plugin.warp.go"],
+        "contexts": ["player"],
+        "risk": "mutate",
+        "completion": {"source": "registry-snapshot", "permission_filtered": true, "cap": 25},
+        "help": {"summary": "Travel to a warp ($50, 10s cooldown).", "usage": "/warp go <name>"},
+        "deprecation": {
+          "old_path": "warp <name>",
+          "disposition": "alias",
+          "forwards_to": "warp go <name>",
+          "reason": "player muscle memory"
+        },
+        "implementation": {
+          "thread_affinity": "region",
+          "scheduler": "entity",
+          "confirm_flow": "prompt names cost; automation via --confirm"
+        }
+      },
+      {
+        "name": "list",
+        "kind": "literal",
+        "description": "Browse warps, paginated and clickable.",
+        "permissions": ["plugin.warp.view"],
+        "contexts": ["player", "console"],
+        "risk": "read",
+        "completion": {"source": "flags-only"},
+        "help": {"summary": "List warps (page 1 by default).", "usage": "/warp list [--page <n>]"},
+        "implementation": {"thread_affinity": "async-safe"}
+      }
+    ]
+  }
+}

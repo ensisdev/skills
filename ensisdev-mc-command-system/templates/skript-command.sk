@@ -1,0 +1,24 @@
+# Skript command starter (see 14)
+
+```applescript
+command /warp <text=text> [<text=text>]:
+  description: Travel to a named warp.
+  usage: /warp <create|delete|go|list> ...
+  aliases: warps
+  permission: plugin.warp.base
+  permission message: You do not have permission to do that.
+  executable by: players
+  trigger:
+    if arg-1 is "go":
+      if arg-2 is not set:
+        send mini message "<red>Usage: /warp go <name></red>" to player
+        stop
+      # domain lookup, NOT script-internals in command names
+      teleport player to warp arg-2
+    else if arg-1 is "list":
+      send mini message "<aqua>Warps:</aqua> %warps%" to player
+    else:
+      send mini message "<red>Usage: /warp <create|delete|go|list> ...</red>" to player
+```
+
+Rules: parser failures (missing args) vs domain failures (unknown warp) produce different messages; player-only vs console is declared, not assumed; tab completion where the runtime supports it; search all `.sk` callers before renaming (50).

@@ -1,0 +1,24 @@
+{
+  "requirements": [
+    "economy-shop",
+    "gameplay-player",
+    "player-admin-separation",
+    "typed-money",
+    "purchase-confirm"
+  ],
+  "expected_paths": [
+    "shop list",
+    "shop buy <item>",
+    "shop sell <item>"
+  ],
+  "forbidden": [
+    "admin catalog verbs on the player root without tier separation",
+    "currency as free text where a money type exists",
+    "purchase charging without named-cost confirmation"
+  ],
+  "journey_checks": [
+    "list -> buy (confirm) completes",
+    "admin price change visible to players",
+    "invalid amount charges nothing"
+  ]
+}

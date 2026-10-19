@@ -1,0 +1,15 @@
+{
+  "name": "ensisdev-mc-design-skill",
+  "version": "5.1.0",
+  "rules_core": 110,
+  "rules_expanded_per_surface": 300,
+  "references": 46,
+  "examples": 28,
+  "code_patterns": 19,
+  "lint_rules_machine_readable": 30,
+  "case_studies": 4,
+  "surfaces_in_matrix": 26,
+  "new_in_5_1": ["tools/lint_messages.py", "tools/fixtures", "references/TURKISH_COPY.md", "qa/EVALS.md", "neighbor-skill table", "verified version facts"],
+  "new_in_5_0": ["rules/TACTICAL_GUIDE.md", "references/MODERN_MC_FEATURES.md", "references/RESOURCE_PACK_UI.md", "references/BEDROCK_GEYSER.md", "chat prefix standard (gradient [PluginName])", "slot-grid GUI examples"],
+  "note": "v5: SKILL.md slimmed (~100 lines) with a platform-reality-check step; detailed sections moved to rules/TACTICAL_GUIDE.md; modern 1.21.x, resource-pack and Bedrock guidance added; GUI examples redrawn on real slot grids; chat prefix is now a mandatory gradient [PluginName] (PREFIX-001..004). archive/ holds retired v3 corpora and is safe to delete."
+}
